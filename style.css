@@ -708,6 +708,12 @@ a {
   color: var(--text-primary);
   margin-bottom: 16px;
 }
+.badge-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
 .badge-chip {
   display: inline-flex;
   align-items: center;
@@ -716,7 +722,6 @@ a {
   border-radius: 999px;
   font-size: 13px;
   font-weight: 600;
-  margin-bottom: 16px;
   border: 1px solid currentColor;
 }
 .badge-chip .badge-icon { font-size: 14px; }

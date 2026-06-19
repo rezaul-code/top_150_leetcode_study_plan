@@ -430,7 +430,7 @@
 
   const state = {
     view: "dashboard", // "dashboard" | "problem"
-    expanded: new Set(),
+    expandedCat: null, // index of the single open category, or null
     active: { cat: 0, prob: 0 },
     query: "",
   };
@@ -478,7 +478,7 @@
 
       visibleProblemTotal += matches.length;
 
-      const isExpanded = hasQuery ? true : state.expanded.has(catIndex);
+      const isExpanded = hasQuery ? true : state.expandedCat === catIndex;
       const solvedInCat = cat.problems.filter((p) => isSolved(p[2])).length;
       const progressLabel = hasQuery ? `${matches.length}/${cat.problems.length}` : `${solvedInCat}/${cat.problems.length}`;
 
@@ -564,14 +564,6 @@
     };
   }
 
-  function getCurrentTier(totalSolved) {
-    let current = null;
-    BADGE_TIERS.forEach((t) => {
-      if (totalSolved >= t.min) current = t;
-    });
-    return current;
-  }
-
   function getNextTier(totalSolved) {
     return BADGE_TIERS.find((t) => totalSolved < t.min) || null;
   }
@@ -628,20 +620,28 @@
       </div>`;
   }
 
+  function getEarnedTiers(totalSolved) {
+    return BADGE_TIERS.filter((t) => totalSolved >= t.min);
+  }
+
   function renderBadgesCard(totalSolved) {
-    const current = getCurrentTier(totalSolved);
+    const earned = getEarnedTiers(totalSolved);
     const next = getNextTier(totalSolved);
 
     let html = `
       <div class="dash-card badges-card">
         <div class="dash-card-label">Badges</div>
-        <div class="badges-count">${current ? 1 : 0}</div>`;
+        <div class="badges-count">${earned.length}</div>`;
 
-    if (current) {
-      html += `
-        <div class="badge-chip badge-${current.name.toLowerCase()}">
-          <span class="badge-icon">&#127942;</span><span>${current.name}</span>
-        </div>`;
+    if (earned.length > 0) {
+      html += `<div class="badge-chip-row">`;
+      earned.forEach((tier) => {
+        html += `
+          <div class="badge-chip badge-${tier.name.toLowerCase()}">
+            <span class="badge-icon">&#127942;</span><span>${tier.name}</span>
+          </div>`;
+      });
+      html += `</div>`;
     }
 
     if (next) {
@@ -856,11 +856,7 @@
      ---------------------------------------------------------- */
 
   function toggleCategory(catIndex) {
-    if (state.expanded.has(catIndex)) {
-      state.expanded.delete(catIndex);
-    } else {
-      state.expanded.add(catIndex);
-    }
+    state.expandedCat = state.expandedCat === catIndex ? null : catIndex;
     renderSidebar();
   }
 
@@ -885,7 +881,7 @@
   function selectProblem(catIndex, probIndex) {
     state.view = "problem";
     state.active = { cat: catIndex, prob: probIndex };
-    state.expanded.add(catIndex);
+    state.expandedCat = catIndex;
     setDashboardActive(false);
     renderSidebar();
     renderContent();
@@ -900,6 +896,16 @@
   }
 
   function handleToggleSolved(id) {
+    const meta = PROBLEM_BY_ID[id];
+    const name = meta ? meta.name : "this problem";
+    const willBeSolved = !isSolved(id);
+    const message = willBeSolved
+      ? `Mark "${name}" as solved?`
+      : `Unmark "${name}" as solved?`;
+
+    const ok = window.confirm(message);
+    if (!ok) return;
+
     toggleSolved(id);
     renderSidebar();
     if (state.view === "dashboard") {
