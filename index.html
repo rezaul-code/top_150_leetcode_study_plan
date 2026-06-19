@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSA Solutions — Top Interview 150</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="navbar">
+    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle sidebar" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <div class="navbar-brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span class="brand-title">DSA Solutions</span>
+    </div>
+
+    <div class="navbar-search">
+      <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input type="text" id="searchInput" placeholder="Search problems..." autocomplete="off" spellcheck="false">
+      <button class="search-clear" id="searchClear" aria-label="Clear search" hidden>&times;</button>
+    </div>
+
+    <div class="navbar-meta">
+      <span class="problem-count" id="problemCount"></span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <button class="dashboard-nav-btn is-active" id="dashboardBtn" type="button" data-action="dashboard" aria-current="page">
+          <svg class="dashboard-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="9" rx="1"></rect>
+            <rect x="14" y="3" width="7" height="5" rx="1"></rect>
+            <rect x="14" y="12" width="7" height="9" rx="1"></rect>
+            <rect x="3" y="16" width="7" height="5" rx="1"></rect>
+          </svg>
+          <span>Dashboard</span>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav" id="sidebarNav">
+        <!-- categories + problems are rendered here by script.js -->
+      </nav>
+    </aside>
+
+    <main class="content" id="content">
+      <!-- selected problem detail is rendered here by script.js -->
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
