@@ -435,6 +435,8 @@
     query: "",
   };
 
+  let activeProblemRequestId = 0; // guards against stale fetch responses on rapid clicks
+
   /* ----------------------------------------------------------
      6. DOM REFS
      ---------------------------------------------------------- */
@@ -777,53 +779,107 @@
   }
 
   /* ----------------------------------------------------------
+     9.5 PROBLEM CONTENT LOADER (data/<category-slug>.json)
+     Each category has its own JSON file, e.g. data/array-string.json,
+     data/two-pointers.json, etc. The filename slug is derived with
+     the same slugify() used for problem ids, so it always matches
+     the category name automatically — no manual mapping needed.
+     Files are fetched once per category and cached in memory.
+     ---------------------------------------------------------- */
+
+  const CONTENT_CACHE = {}; // categorySlug -> Promise<Array of problem objects>
+
+  function fetchCategoryFile(category) {
+    const slug = slugify(category);
+    const file = `data/${slug}.json`;
+
+    if (!CONTENT_CACHE[slug]) {
+      CONTENT_CACHE[slug] = fetch(file)
+        .then((res) => {
+          if (!res.ok) throw new Error(`HTTP ${res.status} loading ${file}`);
+          return res.json();
+        })
+        .then((json) => {
+          // Accept either a flat array of problem objects, or an object
+          // keyed by category name wrapping that array (both formats
+          // have been used for these data files).
+          if (Array.isArray(json)) return json;
+          if (json && Array.isArray(json[category])) return json[category];
+          return [];
+        })
+        .catch((err) => {
+          console.warn(`Could not load "${file}".`, err);
+          return [];
+        });
+    }
+
+    return CONTENT_CACHE[slug];
+  }
+
+  async function loadProblemContent(category, title) {
+    const list = await fetchCategoryFile(category);
+    return list.find((p) => p && p.title === title) || null;
+  }
+
+  /* ----------------------------------------------------------
      10. RENDER: PROBLEM DETAIL
      ---------------------------------------------------------- */
 
-  function renderProblem() {
-    const cat = DATA[state.active.cat];
-    if (!cat) {
-      contentEl.innerHTML = `<div class="content-inner"><p class="placeholder-card">Select a problem from the sidebar to get started.</p></div>`;
-      return;
-    }
-    const [name, diff] = cat.problems[state.active.prob];
-    const dClass = diffClass(diff);
+  function detailRowHtml(label, value) {
+    return `
+        <div class="problem-category-row">
+          <span class="cat-label">${escapeHtml(label)}:</span>
+          <span class="cat-value">${escapeHtml(value)}</span>
+        </div>`;
+  }
 
-    contentEl.innerHTML = `
-      <div class="content-inner">
-        <div class="breadcrumb">DSA Solutions <span class="crumb-accent">/</span> ${escapeHtml(cat.category)}</div>
+  function problemHeaderHtml(category, name, diff, dClass) {
+    return `
+        <div class="breadcrumb">DSA Solutions <span class="crumb-accent">/</span> ${escapeHtml(category)}</div>
 
         <div class="problem-header">
           <h1 class="problem-title">${escapeHtml(name)}</h1>
-          <span class="difficulty-badge ${dClass}">${diff}</span>
-        </div>
+          <span class="difficulty-badge ${dClass}">${escapeHtml(diff)}</span>
+        </div>`;
+  }
 
-        <div class="problem-category-row">
-          <span class="cat-label">Category:</span>
-          <span class="cat-value">${escapeHtml(cat.category)}</span>
-        </div>
+  function problemLoadingHtml() {
+    return `<div class="placeholder-card">Loading problem details&hellip;</div>`;
+  }
 
-        <div class="placeholder-card">
-          <strong>Solution will be added later.</strong> This page is a structural placeholder —
-          the problem statement, approach notes, and complexity analysis for
-          &ldquo;${escapeHtml(name)}&rdquo; will go here.
-        </div>
+  function problemMissingHtml() {
+    return `<div class="placeholder-card"><strong>Content Coming Soon</strong> — the approach notes and complexity analysis for this problem haven&rsquo;t been added yet.</div>`;
+  }
 
-        <div class="section-label">Solution</div>
-        <div class="code-block">
-          <div class="code-block-bar">
-            <span class="code-dot red"></span>
-            <span class="code-dot yellow"></span>
-            <span class="code-dot green"></span>
-            <span class="code-block-lang">solution.js</span>
-          </div>
-          <div class="code-block-body">
-            <code>// code coming soon</code>
-          </div>
-        </div>
+  function problemFoundHtml(data) {
+    let html = "";
+    html += detailRowHtml("Category", data.category);
+    html += detailRowHtml("Concept", data.concept);
 
-        <div class="actions-row">
-          <a class="btn-github" href="#" data-action="github" aria-disabled="true">
+    html += `<div class="section-label">Easy Approach</div>`;
+    html += `<div class="placeholder-card">${escapeHtml(data.easyApproach)}</div>`;
+
+    html += `<div class="section-label">Optimized Approach</div>`;
+    html += `<div class="placeholder-card">${escapeHtml(data.optimizedApproach)}</div>`;
+
+    html += detailRowHtml("Time Complexity", data.timeComplexity);
+    html += detailRowHtml("Space Complexity", data.spaceComplexity);
+
+    html += `<div class="actions-row">`;
+    if (data.leetcode) {
+      html += `
+          <a class="btn-github" href="${escapeHtml(data.leetcode)}" target="_blank" rel="noopener noreferrer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+            <span>View on LeetCode</span>
+          </a>`;
+    }
+    if (data.github) {
+      html += `
+          <a class="btn-github" href="${escapeHtml(data.github)}" target="_blank" rel="noopener noreferrer">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
               <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
                 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13
@@ -834,8 +890,46 @@
                 A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/>
             </svg>
             <span>View on GitHub</span>
-          </a>
-        </div>
+          </a>`;
+    }
+    html += `</div>`;
+
+    return html;
+  }
+
+  async function renderProblem() {
+    const cat = DATA[state.active.cat];
+    if (!cat) {
+      contentEl.innerHTML = `<div class="content-inner"><p class="placeholder-card">Select a problem from the sidebar to get started.</p></div>`;
+      return;
+    }
+    const [name, diff] = cat.problems[state.active.prob];
+    const dClass = diffClass(diff);
+    const requestId = ++activeProblemRequestId;
+
+    // Render header immediately + a loading state while the JSON fetch is in flight.
+    contentEl.innerHTML = `
+      <div class="content-inner">
+        ${problemHeaderHtml(cat.category, name, diff, dClass)}
+        ${problemLoadingHtml()}
+      </div>`;
+
+    let data = null;
+    try {
+      data = await loadProblemContent(cat.category, name);
+    } catch (err) {
+      console.warn("Failed to load problem content.", err);
+      data = null;
+    }
+
+    // If the user clicked a different problem while this fetch was in
+    // flight, discard this stale result so it doesn't overwrite the UI.
+    if (requestId !== activeProblemRequestId) return;
+
+    contentEl.innerHTML = `
+      <div class="content-inner">
+        ${problemHeaderHtml(cat.category, name, diff, dClass)}
+        ${data ? problemFoundHtml(data) : problemMissingHtml()}
       </div>`;
   }
 
@@ -972,10 +1066,7 @@
 
     const action = trigger.dataset.action;
 
-    if (action === "github") {
-      e.preventDefault();
-      // Placeholder link — wire up to a real repository later.
-    } else if (action === "reset-progress") {
+    if (action === "reset-progress") {
       handleResetProgress();
     }
   });

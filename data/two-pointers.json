@@ -1,0 +1,59 @@
+{
+	"Two Pointers": [
+    {
+      "title": "Valid Palindrome",
+      "difficulty": "Easy",
+      "category": "Two Pointers",
+      "concept": "Two Pointers",
+      "easyApproach": "Filter out all non-alphanumeric characters into a new cleaned, lowercased string, then check if that string equals its reverse.",
+      "optimizedApproach": "Use two pointers starting at both ends of the string, moving inward. Skip over non-alphanumeric characters on either side, then compare the lowercase versions of the characters directly without building a new string.",
+      "timeComplexity": "O(n)",
+      "spaceComplexity": "O(1)",
+      "leetcode": "https://leetcode.com/problems/valid-palindrome/"
+    },
+    {
+      "title": "Is Subsequence",
+      "difficulty": "Easy",
+      "category": "Two Pointers",
+      "concept": "Two Pointers",
+      "easyApproach": "Use repeated searches to find each character of s in t in order, tracking the position progress as you go.",
+      "optimizedApproach": "Use two pointers, one for s and one for t. Advance the t pointer on every step; advance the s pointer only when characters match. If the s pointer reaches the end of s, it is a valid subsequence.",
+      "timeComplexity": "O(n)",
+      "spaceComplexity": "O(1)",
+      "leetcode": "https://leetcode.com/problems/is-subsequence/"
+    },
+    {
+      "title": "Two Sum II - Input Array Is Sorted",
+      "difficulty": "Medium",
+      "category": "Two Pointers",
+      "concept": "Two Pointers",
+      "easyApproach": "Check every pair of elements using nested loops until a pair summing to the target is found.",
+      "optimizedApproach": "Since the array is sorted, use two pointers at the start and end. If the current sum is too small, move the left pointer right; if too large, move the right pointer left; stop when the sum matches the target.",
+      "timeComplexity": "O(n)",
+      "spaceComplexity": "O(1)",
+      "leetcode": "https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/"
+    },
+    {
+      "title": "Container With Most Water",
+      "difficulty": "Medium",
+      "category": "Two Pointers",
+      "concept": "Two Pointers",
+      "easyApproach": "Check every pair of lines, compute the area formed between them, and keep track of the maximum area found.",
+      "optimizedApproach": "Use two pointers at both ends of the array. At each step, compute the area and move the pointer pointing to the shorter line inward, since that line is the limiting factor on area; track the maximum area seen.",
+      "timeComplexity": "O(n)",
+      "spaceComplexity": "O(1)",
+      "leetcode": "https://leetcode.com/problems/container-with-most-water/"
+    },
+    {
+      "title": "3Sum",
+      "difficulty": "Medium",
+      "category": "Two Pointers",
+      "concept": "Two Pointers",
+      "easyApproach": "Use three nested loops to check every triplet for a sum of zero, storing unique results in a set to avoid duplicates.",
+      "optimizedApproach": "Sort the array first. Fix one element at a time, then use two pointers on the remaining sorted subarray to find pairs that sum to the negative of the fixed element, skipping over duplicate values to avoid repeated triplets.",
+      "timeComplexity": "O(n^2)",
+      "spaceComplexity": "O(log n) to O(n) depending on sort implementation",
+      "leetcode": "https://leetcode.com/problems/3sum/"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "Sliding Window": [
+    {
+      "title": "Minimum Size Subarray Sum",
+      "difficulty": "Medium",
+      "category": "Sliding Window",
+      "concept": "Sliding Window",
+      "easyApproach": "Check every possible subarray using nested loops, summing its elements and tracking the smallest length whose sum is at least target.",
+      "optimizedApproach": "Use a sliding window with two pointers. Expand the right pointer to add elements to the running sum; whenever the sum meets or exceeds target, shrink from the left while updating the minimum length, then continue expanding.",
+      "timeComplexity": "O(n)",
+      "spaceComplexity": "O(1)",
+      "leetcode": "https://leetcode.com/problems/minimum-size-subarray-sum/"
+    },
+    {
+      "title": "Longest Substring Without Repeating Characters",
+      "difficulty": "Medium",
+      "category": "Sliding Window",
+      "concept": "Sliding Window",
+      "easyApproach": "For every starting index, expand a substring character by character using a set to detect duplicates, tracking the longest valid length found.",
+      "optimizedApproach": "Maintain a sliding window with a hashmap storing the last seen index of each character. Expand the right pointer each step; if the character was seen inside the current window, move the left pointer just past its last occurrence, then update the max window length.",
+      "timeComplexity": "O(n)",
+      "spaceComplexity": "O(min(n, charset size))",
+      "leetcode": "https://leetcode.com/problems/longest-substring-without-repeating-characters/"
+    },
+    {
+      "title": "Substring with Concatenation of All Words",
+      "difficulty": "Hard",
+      "category": "Sliding Window",
+      "concept": "Sliding Window + Hashing",
+      "easyApproach": "For each starting index in s, try to match the concatenation by checking every permutation-like grouping of word-length chunks against the words list using a frequency map, restarting the check from scratch each time.",
+      "optimizedApproach": "Since all words share the same length, run a sliding window for each of the word-length possible offsets. Maintain a count map of needed words; slide one word-length at a time, adding the new word and removing the leftmost word when a word's count exceeds what's needed or an invalid word appears, otherwise recording valid starting indices when the window matches exactly.",
+      "timeComplexity": "O(n * wordLength)",
+      "spaceComplexity": "O(numWords)",
+      "leetcode": "https://leetcode.com/problems/substring-with-concatenation-of-all-words/"
+    },
+    {
+      "title": "Minimum Window Substring",
+      "difficulty": "Hard",
+      "category": "Sliding Window",
+      "concept": "Sliding Window + Hashing",
+      "easyApproach": "For every possible substring of s, check whether it contains all characters of t with the required frequency, tracking the shortest valid one found.",
+      "optimizedApproach": "Use a sliding window with a frequency map of characters needed from t and a counter of how many required characters are currently satisfied. Expand the right pointer to include characters; once all requirements are met, shrink from the left to minimize the window while still valid, updating the best result throughout.",
+      "timeComplexity": "O(n + m)",
+      "spaceComplexity": "O(charset size)",
+      "leetcode": "https://leetcode.com/problems/minimum-window-substring/"
+    }
+  ]
+}

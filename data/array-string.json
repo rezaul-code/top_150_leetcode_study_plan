@@ -1,0 +1,268 @@
+{
+  "Array / String": [
+    {
+      "title": "Merge Sorted Array",
+      "difficulty": "Easy",
+      "category": "Array / String",
+      "concept": "Two Pointers",
+      "easyApproach": "Merge nums1 and nums2 into a new array, sort the combined array, then copy the values back into nums1. This works but uses extra O(m+n) space.",
+      "optimizedApproach": "Start filling nums1 from the back using three pointers: one at the last valid element of nums1, one at the last element of nums2, and one at the last index of nums1. Compare and place the larger value at the end each time, moving pointers inward.",
+      "timeComplexity": "O(m + n)",
+      "spaceComplexity": "O(1)",
+      "leetcode": "https://leetcode.com/problems/merge-sorted-array/"
+    },
+    {
+      "title": "Remove Element",
+      "difficulty": "Easy",
+      "category": "Array / String",
+      "concept": "Two Pointers",
+      "easyApproach": "Create a new array containing only elements not equal to val, then copy those values back into nums and return the new length.",
+      "optimizedApproach": "Use a slow pointer to mark the next position to write. Scan with a fast pointer; whenever nums[fast] is not equal to val, copy it to nums[slow] and increment slow. This avoids extra space.",
+      "timeComplexity": "O(n)",
+      "spaceComplexity": "O(1)",
+      "leetcode": "https://leetcode.com/problems/remove-element/"
+    },
+    {
+      "title": "Remove Duplicates from Sorted Array",
+      "difficulty": "Easy",
+      "category": "Array / String",
+      "concept": "Two Pointers",
+      "easyApproach": "Build a new list by adding an element only when it differs from the previous one, then copy it back into nums.",
+      "optimizedApproach": "Use a slow pointer for the position of the last unique element and a fast pointer to scan ahead. When nums[fast] differs from nums[slow], increment slow and copy nums[fast] into it.",
+      "timeComplexity": "O(n)",
+      "spaceComplexity": "O(1)",
+      "leetcode": "https://leetcode.com/problems/remove-duplicates-from-sorted-array/"
+    },
+    {
+      "title": "Remove Duplicates from Sorted Array II",
+      "difficulty": "Medium",
+      "category": "Array / String",
+      "concept": "Two Pointers",
+      "easyApproach": "Count occurrences of each value using a hashmap, then rebuild the array allowing at most two copies of each value.",
+      "optimizedApproach": "Use a slow pointer that only advances and copies nums[fast] when nums[fast] differs from nums[slow-2], which naturally allows up to two duplicates while staying in place.",
+      "timeComplexity": "O(n)",
+      "spaceComplexity": "O(1)",
+      "leetcode": "https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/"
+    },
+    {
+      "title": "Majority Element",
+      "difficulty": "Easy",
+      "category": "Array / String",
+      "concept": "Hashing / Boyer-Moore Voting",
+      "easyApproach": "Use a hashmap to count occurrences of each element while scanning, then return the element whose count exceeds n/2.",
+      "optimizedApproach": "Apply the Boyer-Moore Voting Algorithm: maintain a candidate and a counter. Increment the counter when the current element matches the candidate, otherwise decrement it; reset the candidate when the counter hits zero. The majority element always survives.",
+      "timeComplexity": "O(n)",
+      "spaceComplexity": "O(1)",
+      "leetcode": "https://leetcode.com/problems/majority-element/"
+    },
+    {
+      "title": "Rotate Array",
+      "difficulty": "Medium",
+      "category": "Array / String",
+      "concept": "Array Reversal",
+      "easyApproach": "Create a new array of the same size, place each element at its rotated index (i + k) % n, then copy it back into nums.",
+      "optimizedApproach": "Reverse the entire array, then reverse the first k elements, then reverse the remaining n - k elements. Three in-place reversals achieve the rotation without extra space.",
+      "timeComplexity": "O(n)",
+      "spaceComplexity": "O(1)",
+      "leetcode": "https://leetcode.com/problems/rotate-array/"
+    },
+    {
+      "title": "Best Time to Buy and Sell Stock",
+      "difficulty": "Easy",
+      "category": "Array / String",
+      "concept": "Greedy",
+      "easyApproach": "Check every pair of buy and sell days with nested loops and track the maximum profit found.",
+      "optimizedApproach": "Traverse the prices once while tracking the minimum price seen so far. At each day, compute the profit if sold today and update the maximum profit.",
+      "timeComplexity": "O(n)",
+      "spaceComplexity": "O(1)",
+      "leetcode": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/"
+    },
+    {
+      "title": "Best Time to Buy and Sell Stock II",
+      "difficulty": "Medium",
+      "category": "Array / String",
+      "concept": "Greedy",
+      "easyApproach": "Try all valid combinations of buy/sell transactions recursively and track the maximum total profit.",
+      "optimizedApproach": "Since unlimited transactions are allowed, sum up every positive difference between consecutive days. Each upward price movement can be captured as profit.",
+      "timeComplexity": "O(n)",
+      "spaceComplexity": "O(1)",
+      "leetcode": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/"
+    },
+    {
+      "title": "Jump Game",
+      "difficulty": "Medium",
+      "category": "Array / String",
+      "concept": "Greedy",
+      "easyApproach": "Use recursion or backtracking to try every possible jump length from each index and check if the last index is reachable.",
+      "optimizedApproach": "Track the farthest index reachable so far while iterating left to right. If the current index ever exceeds the farthest reachable index, return false; otherwise update the farthest reach.",
+      "timeComplexity": "O(n)",
+      "spaceComplexity": "O(1)",
+      "leetcode": "https://leetcode.com/problems/jump-game/"
+    },
+    {
+      "title": "Jump Game II",
+      "difficulty": "Medium",
+      "category": "Array / String",
+      "concept": "Greedy / BFS",
+      "easyApproach": "Treat each jump as a BFS level, exploring all indices reachable from the current level before moving to the next, counting levels until the end is reached.",
+      "optimizedApproach": "Maintain the current jump's farthest boundary and the overall farthest reachable index. When the current index reaches the current boundary, increment the jump count and update the boundary to the farthest reach.",
+      "timeComplexity": "O(n)",
+      "spaceComplexity": "O(1)",
+      "leetcode": "https://leetcode.com/problems/jump-game-ii/"
+    },
+    {
+      "title": "H-Index",
+      "difficulty": "Medium",
+      "category": "Array / String",
+      "concept": "Sorting",
+      "easyApproach": "Sort the citations array in descending order, then find the largest index i such that citations[i] is at least i + 1.",
+      "optimizedApproach": "Use a counting sort style bucket array sized n + 1, capping citation counts above n. Then iterate from the highest bucket down, accumulating the running count until it meets or exceeds the index, which gives the h-index in linear time.",
+      "timeComplexity": "O(n log n) easy / O(n) optimized",
+      "spaceComplexity": "O(n)",
+      "leetcode": "https://leetcode.com/problems/h-index/"
+    },
+    {
+      "title": "Insert Delete GetRandom O(1)",
+      "difficulty": "Medium",
+      "category": "Array / String",
+      "concept": "Hashing + Array Design",
+      "easyApproach": "Store elements in a plain list and use linear search to check existence and to find an element's position before removing it.",
+      "optimizedApproach": "Maintain a dynamic array for values alongside a hashmap from value to its index. To delete in O(1), swap the target element with the last array element, update the hashmap, then pop the last element instead of shifting the array.",
+      "timeComplexity": "O(1) average per operation",
+      "spaceComplexity": "O(n)",
+      "leetcode": "https://leetcode.com/problems/insert-delete-getrandom-o1/"
+    },
+    {
+      "title": "Product of Array Except Self",
+      "difficulty": "Medium",
+      "category": "Array / String",
+      "concept": "Prefix / Suffix Product",
+      "easyApproach": "For each index, multiply all other elements using a nested loop, avoiding division entirely but resulting in quadratic time.",
+      "optimizedApproach": "Compute a prefix product array where each position holds the product of all elements before it, then do a second pass from the right multiplying in the suffix product on the fly, avoiding extra arrays beyond the output.",
+      "timeComplexity": "O(n)",
+      "spaceComplexity": "O(1) extra (excluding output array)",
+      "leetcode": "https://leetcode.com/problems/product-of-array-except-self/"
+    },
+    {
+      "title": "Gas Station",
+      "difficulty": "Medium",
+      "category": "Array / String",
+      "concept": "Greedy",
+      "easyApproach": "Try every station as a starting point and simulate the full trip to check if the tank ever goes negative.",
+      "optimizedApproach": "A solution exists only if total gas is at least total cost. Track a running tank while scanning once; whenever the tank goes negative, the current segment is invalid, so reset the candidate start to the next index and reset the tank.",
+      "timeComplexity": "O(n)",
+      "spaceComplexity": "O(1)",
+      "leetcode": "https://leetcode.com/problems/gas-station/"
+    },
+    {
+      "title": "Candy",
+      "difficulty": "Hard",
+      "category": "Array / String",
+      "concept": "Greedy",
+      "easyApproach": "Repeatedly scan the ratings and bump up candy counts wherever a neighbor rule is violated, looping until no more changes are needed.",
+      "optimizedApproach": "Do two linear passes. Left to right, give a child one more candy than the left neighbor if their rating is higher. Right to left, do the same comparison with the right neighbor, taking the maximum of the two passes at each index.",
+      "timeComplexity": "O(n)",
+      "spaceComplexity": "O(n)",
+      "leetcode": "https://leetcode.com/problems/candy/"
+    },
+    {
+      "title": "Trapping Rain Water",
+      "difficulty": "Hard",
+      "category": "Array / String",
+      "concept": "Two Pointers",
+      "easyApproach": "For each index, precompute the maximum height to its left and to its right using extra arrays, then the trapped water at that index is the minimum of the two maxes minus the height there.",
+      "optimizedApproach": "Use two pointers starting at both ends along with leftMax and rightMax variables. Always move the pointer on the side with the smaller max inward, since that side's water level is bounded, adding trapped water as you go.",
+      "timeComplexity": "O(n)",
+      "spaceComplexity": "O(1)",
+      "leetcode": "https://leetcode.com/problems/trapping-rain-water/"
+    },
+    {
+      "title": "Roman to Integer",
+      "difficulty": "Easy",
+      "category": "Array / String",
+      "concept": "Simulation / Hashing",
+      "easyApproach": "Map each roman numeral character to its value, sum all the values, then handle subtractive pairs by subtracting twice their smaller value afterward.",
+      "optimizedApproach": "Iterate through the string once. If the current symbol's value is less than the next symbol's value, subtract it from the total; otherwise add it. This naturally handles subtractive cases like IV and IX in a single pass.",
+      "timeComplexity": "O(n)",
+      "spaceComplexity": "O(1)",
+      "leetcode": "https://leetcode.com/problems/roman-to-integer/"
+    },
+    {
+      "title": "Integer to Roman",
+      "difficulty": "Medium",
+      "category": "Array / String",
+      "concept": "Greedy",
+      "easyApproach": "Repeatedly find the largest roman value that fits into the remaining number, append its symbol, and subtract it, looping until the number reaches zero.",
+      "optimizedApproach": "Use a predefined list of value-symbol pairs in descending order, including subtractive combinations like 900-CM and 40-XL. Greedily append the symbol and subtract its value whenever it fits, moving to the next pair otherwise.",
+      "timeComplexity": "O(1) (bounded by fixed symbol set)",
+      "spaceComplexity": "O(1)",
+      "leetcode": "https://leetcode.com/problems/integer-to-roman/"
+    },
+    {
+      "title": "Length of Last Word",
+      "difficulty": "Easy",
+      "category": "Array / String",
+      "concept": "Simulation",
+      "easyApproach": "Split the string by spaces into words and return the length of the last non-empty token.",
+      "optimizedApproach": "Traverse the string from the end, skip any trailing spaces, then count characters until the next space or the start of the string is reached.",
+      "timeComplexity": "O(n)",
+      "spaceComplexity": "O(1)",
+      "leetcode": "https://leetcode.com/problems/length-of-last-word/"
+    },
+    {
+      "title": "Longest Common Prefix",
+      "difficulty": "Easy",
+      "category": "Array / String",
+      "concept": "String Comparison",
+      "easyApproach": "Take the first string as a candidate prefix and compare it against every other string, shrinking it from the end whenever a mismatch occurs.",
+      "optimizedApproach": "Scan column by column across all strings simultaneously. At each character position, compare the character in every string; stop and return the prefix built so far as soon as a mismatch or a string ending is found.",
+      "timeComplexity": "O(S) where S is total characters across all strings",
+      "spaceComplexity": "O(1)",
+      "leetcode": "https://leetcode.com/problems/longest-common-prefix/"
+    },
+    {
+      "title": "Reverse Words in a String",
+      "difficulty": "Medium",
+      "category": "Array / String",
+      "concept": "Two Pointers / String",
+      "easyApproach": "Split the string on whitespace into a list of words, reverse the order of the list, then join the words back together with single spaces.",
+      "optimizedApproach": "Trim leading/trailing spaces and collapse multiple spaces while scanning from the end of the string using two pointers, collecting words in reverse order directly into the result without extra splitting overhead.",
+      "timeComplexity": "O(n)",
+      "spaceComplexity": "O(n)",
+      "leetcode": "https://leetcode.com/problems/reverse-words-in-a-string/"
+    },
+    {
+      "title": "Zigzag Conversion",
+      "difficulty": "Medium",
+      "category": "Array / String",
+      "concept": "Simulation",
+      "easyApproach": "Create numRows separate string buffers and walk through the input character by character, appending each character to the buffer for its current row.",
+      "optimizedApproach": "Track the current row and a direction flag. Move the row pointer down until hitting the last row, then flip direction and move up until hitting the first row, appending each character to its row buffer in a single pass, then concatenate all buffers.",
+      "timeComplexity": "O(n)",
+      "spaceComplexity": "O(n)",
+      "leetcode": "https://leetcode.com/problems/zigzag-conversion/"
+    },
+    {
+      "title": "Find the Index of the First Occurrence in a String",
+      "difficulty": "Easy",
+      "category": "Array / String",
+      "concept": "String Matching",
+      "easyApproach": "At every starting position in haystack, compare the substring of the same length as needle character by character to check for a match.",
+      "optimizedApproach": "Use the KMP algorithm: build a prefix function for needle that records the longest matching prefix-suffix lengths, then scan haystack once, using the prefix function to skip redundant comparisons on mismatch.",
+      "timeComplexity": "O(n*m) easy / O(n+m) optimized with KMP",
+      "spaceComplexity": "O(m)",
+      "leetcode": "https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/"
+    },
+    {
+      "title": "Text Justification",
+      "difficulty": "Hard",
+      "category": "Array / String",
+      "concept": "Simulation / Greedy",
+      "easyApproach": "Group words into lines by greedily adding words while they fit within maxWidth, then pad each line with spaces using simple loops without precise even distribution.",
+      "optimizedApproach": "Greedily pack as many words as fit per line based on maxWidth, then distribute the extra spaces evenly between words, giving leftover spaces to the leftmost gaps first. Special-case the last line and single-word lines to be left-justified with trailing spaces.",
+      "timeComplexity": "O(n)",
+      "spaceComplexity": "O(n)",
+      "leetcode": "https://leetcode.com/problems/text-justification/"
+    }
+  ]
+}
